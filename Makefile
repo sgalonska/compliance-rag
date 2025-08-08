@@ -4,68 +4,116 @@
 
 # Default target
 help:
-	@echo "Available commands:"
-	@echo "  install     - Install dependencies"
-	@echo "  dev         - Start development environment"
+	@echo "🏛️  Compliance RAG System - Local Docker Deployment"
+	@echo ""
+	@echo "📋 Setup Commands:"
+	@echo "  setup-env   - Setup environment files"
 	@echo "  build       - Build Docker images"
+	@echo ""
+	@echo "🚀 Development Commands:"
+	@echo "  dev         - Start development environment (recommended)"
 	@echo "  start       - Start production environment"
 	@echo "  stop        - Stop all services"
-	@echo "  logs        - View logs"
+	@echo "  restart     - Restart all services"
+	@echo ""
+	@echo "📊 Monitoring Commands:"
+	@echo "  logs        - View all logs"
+	@echo "  logs-backend - View backend logs only"
+	@echo "  logs-frontend - View frontend logs only"
+	@echo "  health      - Check service health"
+	@echo ""
+	@echo "🛠️  Utility Commands:"
 	@echo "  clean       - Clean up containers and volumes"
-	@echo "  test        - Run tests"
-	@echo "  setup-env   - Setup environment files"
+	@echo "  reset       - Complete reset (clean + rebuild)"
+	@echo "  shell-backend - Open backend container shell"
+	@echo "  shell-db    - Open database shell"
+
+# Setup
+setup-env:
+	@echo "🔧 Setting up environment files..."
+	@cp backend/.env.example backend/.env || echo "backend/.env already exists"
+	@echo ""
+	@echo "📝 Please edit backend/.env with your configuration:"
+	@echo "   - QDRANT_URL and QDRANT_API_KEY"
+	@echo "   - OPENAI_API_KEY"
+	@echo "   - SECRET_KEY (generate a secure 32+ character string)"
+	@echo ""
+	@echo "💡 Then run: make dev"
 
 # Development
-install:
-	@echo "Installing backend dependencies..."
-	cd backend && pip install -r requirements.txt
-	@echo "Installing frontend dependencies..."
-	cd frontend && npm install
-
 dev:
-	@echo "Starting development environment..."
-	docker-compose up -d postgres redis
-	@echo "Backend will be available at http://localhost:8000"
-	@echo "Frontend will be available at http://localhost:3000"
-	@echo "Run 'make dev-backend' and 'make dev-frontend' in separate terminals"
+	@echo "🚀 Starting development environment..."
+	@echo "This will start PostgreSQL, Redis, and build your application"
+	docker-compose up -d --build
+	@echo ""
+	@echo "✅ Services starting up..."
+	@echo "🌐 Frontend: http://localhost:3000"
+	@echo "🔗 Backend API: http://localhost:8000"
+	@echo "📖 API Docs: http://localhost:8000/docs"
+	@echo ""
+	@echo "📊 Check status: make logs"
+	@echo "🛑 Stop services: make stop"
 
-dev-backend:
-	@echo "Starting backend in development mode..."
-	cd backend && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-
-dev-frontend:
-	@echo "Starting frontend in development mode..."
-	cd frontend && npm run dev
-
-# Production
 build:
-	@echo "Building Docker images..."
+	@echo "🔨 Building Docker images..."
 	docker-compose build
 
 start:
-	@echo "Starting production environment..."
-	docker-compose -f docker-compose.prod.yml up -d
+	@echo "🚀 Starting all services..."
+	docker-compose up -d
+
+restart:
+	@echo "🔄 Restarting all services..."
+	docker-compose restart
 
 stop:
-	@echo "Stopping all services..."
+	@echo "🛑 Stopping all services..."
 	docker-compose down
-	docker-compose -f docker-compose.prod.yml down
 
-# Utilities
+# Monitoring
 logs:
+	@echo "📊 Viewing all service logs (Ctrl+C to exit)..."
 	docker-compose logs -f
 
 logs-backend:
+	@echo "📊 Viewing backend logs (Ctrl+C to exit)..."
 	docker-compose logs -f backend
 
 logs-frontend:
+	@echo "📊 Viewing frontend logs (Ctrl+C to exit)..."
 	docker-compose logs -f frontend
 
+health:
+	@echo "🏥 Checking service health..."
+	@echo "Backend API:"
+	@curl -s http://localhost:8000/health | grep -o '"status":"[^"]*"' || echo "❌ Backend not responding"
+	@echo ""
+	@echo "Frontend:"
+	@curl -s http://localhost:3000 > /dev/null && echo "✅ Frontend responding" || echo "❌ Frontend not responding"
+	@echo ""
+	@echo "Database:"
+	@docker-compose exec -T postgres pg_isready -U postgres > /dev/null && echo "✅ Database responding" || echo "❌ Database not responding"
+
+# Utilities
+shell-backend:
+	@echo "🐚 Opening backend container shell..."
+	docker-compose exec backend bash
+
+shell-db:
+	@echo "🐚 Opening database shell..."
+	docker-compose exec postgres psql -U postgres -d compliance_rag
+
 clean:
-	@echo "Cleaning up containers and volumes..."
+	@echo "🧹 Cleaning up containers and volumes..."
 	docker-compose down -v
-	docker-compose -f docker-compose.prod.yml down -v
 	docker system prune -f
+	@echo "✅ Cleanup complete"
+
+reset:
+	@echo "🔄 Complete reset (clean + rebuild)..."
+	$(MAKE) clean
+	$(MAKE) build
+	@echo "✅ Reset complete - run 'make dev' to start"
 
 # Database
 db-migrate:

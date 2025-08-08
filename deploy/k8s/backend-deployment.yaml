@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: compliance-rag-backend
+  namespace: compliance-rag
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: compliance-rag-backend
+  template:
+    metadata:
+      labels:
+        app: compliance-rag-backend
+    spec:
+      containers:
+      - name: backend
+        image: compliance-rag-backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: compliance-rag-secrets
+              key: database-url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: compliance-rag-secrets
+              key: redis-url
+        - name: QDRANT_URL
+          valueFrom:
+            secretKeyRef:
+              name: compliance-rag-secrets
+              key: qdrant-url
+        - name: QDRANT_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: compliance-rag-secrets
+              key: qdrant-api-key
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: compliance-rag-secrets
+              key: openai-api-key
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: compliance-rag-secrets
+              key: secret-key
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: compliance-rag-backend-service
+  namespace: compliance-rag
+spec:
+  selector:
+    app: compliance-rag-backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+  type: ClusterIP
