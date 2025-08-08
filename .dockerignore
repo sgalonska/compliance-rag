@@ -1,0 +1,60 @@
+# Git
+.git
+.gitignore
+
+# Node.js
+node_modules
+npm-debug.log*
+.npm
+
+# Next.js
+.next
+out
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+env
+venv
+ENV
+env.bak
+venv.bak
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+
+# Logs
+*.log
+logs
+
+# Testing
+.coverage
+.pytest_cache
+htmlcov
+
+# Documentation
+*.md
+docs/
+
+# Docker
+docker-compose*.yml
+Dockerfile*
