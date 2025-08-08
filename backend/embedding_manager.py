@@ -1,5 +1,5 @@
 from document_processor import DocumentProcessor
-from qdrant_client import QdrantVectorStore
+from qdrant_store import QdrantVectorStore
 from typing import List, Dict, Any
 from pathlib import Path
 import os

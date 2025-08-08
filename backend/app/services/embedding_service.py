@@ -5,7 +5,7 @@ from app.core.integration import setup_backend_path
 # Setup backend path for importing existing modules
 setup_backend_path()
 from document_processor import DocumentProcessor
-from qdrant_client import QdrantVectorStore
+from qdrant_store import QdrantVectorStore
 
 class EmbeddingService:
     def __init__(self):

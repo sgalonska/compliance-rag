@@ -196,7 +196,7 @@ class DocumentService:
                 detail=f"Failed to store embeddings: {str(e)}"
             )
     
-    def delete_document(self, db: Session, document_id: int, user_id: int) -> bool:
+    async def delete_document(self, db: Session, document_id: int, user_id: int) -> bool:
         """Delete a document and its associated data"""
         document = self.get_document(db, document_id, user_id)
         if not document:

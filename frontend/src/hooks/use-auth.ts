@@ -13,6 +13,7 @@ export function useAuth() {
     isAuthenticated: authStore.isAuthenticated,
     isLoading: authStore.isLoading,
     tokens: authStore.tokens,
+    logout: authStore.logout,
   }
 }
 

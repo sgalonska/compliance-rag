@@ -3,6 +3,9 @@
 import * as React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ThemeProvider } from '@mui/material/styles'
+import { CssBaseline } from '@mui/material'
+import theme from '@/theme'
 import { Toaster } from '@/components/ui/toaster'
 import { ToastProvider } from '@/components/ui/toast'
 
@@ -58,16 +61,19 @@ export function Providers({ children }: ProvidersProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastProvider>
-        {children}
-        <Toaster />
-        {process.env.NODE_ENV === 'development' && (
-          <ReactQueryDevtools 
-            initialIsOpen={false}
-            buttonPosition="bottom-left"
-          />
-        )}
-      </ToastProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ToastProvider>
+          {children}
+          <Toaster />
+          {process.env.NODE_ENV === 'development' && (
+            <ReactQueryDevtools 
+              initialIsOpen={false}
+              buttonPosition="bottom-left"
+            />
+          )}
+        </ToastProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   )
 }

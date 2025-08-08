@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.services.document_service import DocumentService
-from qdrant_client import QdrantVectorStore
+from qdrant_store import QdrantVectorStore
 from embedding_manager import EmbeddingManager
 
 class RAGService:
