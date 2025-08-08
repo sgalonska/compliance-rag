@@ -15,7 +15,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 py-16">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Welcome back, {user.full_name || user.email}
+              Welcome back, {user.username || user.email}
             </h1>
             <p className="text-xl text-gray-600 mb-8">
               Your AI-powered compliance assistant is ready

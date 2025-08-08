@@ -32,7 +32,7 @@ export function useDocuments(searchParams: DocumentSearchRequest = {}) {
       return await api.get(`/api/documents?${params.toString()}`)
     },
     staleTime: 30 * 1000, // 30 seconds
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
   })
 }
 
@@ -58,6 +58,7 @@ export function useInfiniteDocuments(searchParams: Omit<DocumentSearchRequest, '
 
       return await api.get(`/api/documents?${params.toString()}`)
     },
+    initialPageParam: 0,
     getNextPageParam: (lastPage) => {
       const { page, total_pages } = lastPage
       return page < total_pages ? page * 20 : undefined
@@ -197,9 +198,9 @@ export function useDocumentProcessingStatus(documentId: string) {
       return await api.get(`/api/documents/${documentId}/status`)
     },
     enabled: !!documentId,
-    refetchInterval: (data) => {
+    refetchInterval: (query) => {
       // Stop polling if processing is complete or failed
-      if (data?.status === 'completed' || data?.status === 'failed') {
+      if (query.state.data?.status === 'completed' || query.state.data?.status === 'failed') {
         return false
       }
       return 2000 // Poll every 2 seconds while processing

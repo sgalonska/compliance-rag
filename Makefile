@@ -144,18 +144,6 @@ test-backend:
 test-frontend:
 	cd frontend && npm test
 
-# Setup
-setup-env:
-	@echo "Setting up environment files..."
-	cp backend/.env.example backend/.env
-	cp .env.example .env.prod
-	@echo "Please edit backend/.env and .env.prod with your configuration"
-
-# Health checks
-health:
-	@echo "Checking service health..."
-	curl -f http://localhost:8000/health && echo "✅ Backend healthy"
-	curl -f http://localhost:3000 && echo "✅ Frontend healthy"
 
 # Backup
 backup:

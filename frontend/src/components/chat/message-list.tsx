@@ -60,7 +60,7 @@ export function MessageList({
         ul: ({ children }) => <ul className="mb-2 list-disc list-inside">{children}</ul>,
         ol: ({ children }) => <ol className="mb-2 list-decimal list-inside">{children}</ol>,
         li: ({ children }) => <li className="mb-1">{children}</li>,
-        code: ({ inline, children }) =>
+        code: ({ inline, children, ...props }: any) =>
           inline ? (
             <code className="px-1 py-0.5 text-xs bg-gray-100 dark:bg-gray-800 rounded">
               {children}

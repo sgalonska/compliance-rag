@@ -22,11 +22,13 @@ import { LoadingSpinner } from '@/components/ui/spinner'
 import { useAuth } from '@/hooks/use-auth'
 import { useDocuments } from '@/hooks/use-documents'
 import { useChatSessions } from '@/hooks/use-chat'
+import { DocumentSearchResponse } from '@/types/document'
+import { ChatSessionsResponse } from '@/types/chat'
 import { formatBytes, formatTimeAgo } from '@/lib/utils'
 
 function DashboardStats() {
-  const { data: documentsData, isLoading: documentsLoading } = useDocuments({ limit: 100 })
-  const { data: chatSessionsData, isLoading: sessionsLoading } = useChatSessions()
+  const { data: documentsData, isLoading: documentsLoading } = useDocuments({ limit: 100 }) as { data: DocumentSearchResponse | undefined, isLoading: boolean }
+  const { data: chatSessionsData, isLoading: sessionsLoading } = useChatSessions() as { data: ChatSessionsResponse | undefined, isLoading: boolean }
 
   const stats = React.useMemo(() => {
     if (!documentsData?.documents) {
@@ -136,8 +138,8 @@ function DashboardStats() {
 }
 
 function RecentActivity() {
-  const { data: documentsData } = useDocuments({ limit: 5 })
-  const { data: chatSessionsData } = useChatSessions()
+  const { data: documentsData } = useDocuments({ limit: 5 }) as { data: DocumentSearchResponse | undefined }
+  const { data: chatSessionsData } = useChatSessions() as { data: ChatSessionsResponse | undefined }
 
   const recentDocuments = documentsData?.documents?.slice(0, 5) || []
   const recentChats = chatSessionsData?.sessions?.slice(0, 3) || []
