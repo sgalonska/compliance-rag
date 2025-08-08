@@ -33,12 +33,16 @@ setup-env:
 	@echo "🔧 Setting up environment files..."
 	@cp backend/.env.example backend/.env || echo "backend/.env already exists"
 	@echo ""
-	@echo "📝 Please edit backend/.env with your configuration:"
-	@echo "   - QDRANT_URL and QDRANT_API_KEY"
-	@echo "   - OPENAI_API_KEY"
-	@echo "   - SECRET_KEY (generate a secure 32+ character string)"
+	@echo "📝 Configuration completed! This system runs 100% locally:"
+	@echo "   ✅ No API keys required"
+	@echo "   ✅ No external services needed" 
+	@echo "   ✅ Complete privacy and control"
 	@echo ""
-	@echo "💡 Then run: make dev"
+	@echo "🔑 Only edit SECRET_KEY in backend/.env (generate a secure 32+ character string)"
+	@echo ""
+	@echo "💡 Next steps:"
+	@echo "   1. make dev              # Start all services"
+	@echo "   2. ./scripts/setup-models.sh  # Download local AI models"
 
 # Development
 dev:

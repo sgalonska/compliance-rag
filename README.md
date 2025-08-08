@@ -1,6 +1,6 @@
 # Compliance RAG System 🏛️
 
-A modern, enterprise-grade Retrieval-Augmented Generation (RAG) system designed for compliance officers to chat with and query compliance documents. Built with **FastAPI**, **React TypeScript**, **PostgreSQL**, and **Qdrant** vector database.
+A modern, **100% local** Retrieval-Augmented Generation (RAG) system designed for compliance officers to chat with and query compliance documents. Built with **FastAPI**, **React TypeScript**, **PostgreSQL**, **Ollama**, and **local embeddings** - no external APIs required!
 
 ## ✨ Features
 

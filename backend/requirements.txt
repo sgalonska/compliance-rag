@@ -14,16 +14,21 @@ aiofiles==23.2.0
 httpx==0.25.2
 celery==5.3.4
 
-# ML/RAG Dependencies
+# ML/RAG Dependencies (Local LLM)
 qdrant-client==1.7.3
 langchain==0.1.5
 langchain-community==0.0.20
-langchain-openai==0.0.6
-openai==1.12.0
+ollama==0.1.7
+sentence-transformers==2.2.2
+transformers==4.36.2
+torch==2.1.2
 pypdf2==3.0.1
 python-docx==1.1.0
 openpyxl==3.1.2
 pandas==2.2.0
-sentence-transformers==2.2.2
 python-dotenv==1.0.1
 tiktoken==0.5.2
+
+# Optional: Keep OpenAI as fallback
+openai==1.12.0
+langchain-openai==0.0.6

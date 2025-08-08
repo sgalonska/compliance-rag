@@ -30,14 +30,26 @@ class Settings(BaseSettings):
     QDRANT_API_KEY: Optional[str] = None
     COLLECTION_NAME: str = "compliance_documents"
     
-    # OpenAI
+    # LLM Settings
+    LLM_PROVIDER: str = "ollama"  # "ollama" or "openai"
+    
+    # Ollama Settings
+    OLLAMA_BASE_URL: str = "http://ollama:11434"
+    OLLAMA_MODEL: str = "llama2"  # Default model
+    OLLAMA_EMBEDDING_MODEL: str = "nomic-embed-text"
+    
+    # OpenAI (Fallback)
     OPENAI_API_KEY: Optional[str] = None
+    OPENAI_EMBEDDING_MODEL: str = "text-embedding-3-small"
+    OPENAI_LLM_MODEL: str = "gpt-4-turbo-preview"
+    
+    # Local Embedding Settings
+    LOCAL_EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
+    LOCAL_EMBEDDING_DEVICE: str = "cpu"  # "cpu" or "cuda"
     
     # RAG Settings
     CHUNK_SIZE: int = 1000
     CHUNK_OVERLAP: int = 200
-    EMBEDDING_MODEL: str = "text-embedding-3-small"
-    LLM_MODEL: str = "gpt-4-turbo-preview"
     
     # File Upload
     MAX_FILE_SIZE: int = 50 * 1024 * 1024  # 50MB
